@@ -1,0 +1,33 @@
+--uncorelated subqueries
+
+select movie_name,movie_length from movies
+where movie_length>(select avg(movie_length) from movies)
+order by movie_length;
+
+select first_name,last_name from directors
+where date_of_birth>(select date_of_birth from directors
+where first_name='James' and last_name='Cameron')
+
+--PART 2
+select movie_name from movies where movie_id in
+(select movie_id from movie_revenues
+where international_takings>domestic_takings);
+
+
+select m.movie_id,m.movie_name,d.first_name,d.last_name from movies m
+inner join directors d on m.director_id=d.director_id
+where m.movie_id in
+(select movie_id from movie_revenues
+where international_takings>domestic_takings)
+
+--CORRELATED SUBQUEIRES
+
+select d1.first_name,d1.last_name,d1.date_of_birth
+from directors d1
+where d1.date_of_birth=
+(select min(date_of_birth) from directors d2 where d2.nationality=d1.nationality);
+
+select m1.movie_lang,m1.movie_length from movies m1
+where m1.movie_length=
+(select max(movie_length) from movies m2 where m2.movie_lang=m1.movie_lang); 
+

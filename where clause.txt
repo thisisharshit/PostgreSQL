@@ -1,0 +1,46 @@
+select * from directors;
+
+select first_name,director_id from directors;
+
+select first_name,last_name,nationality from directors;
+
+--retrieving data with a where clause
+
+select * from  movies
+where age_certificate='15';
+
+select * from  movies
+where age_certificate='15' and movie_lang='Chinese';
+
+select * from  movies
+where age_certificate='15' or movie_lang='Chinese';
+
+select * from  movies
+where movie_lang='English' and age_certificate='15' and director_id=27;
+
+-- using logical operators (>,>=,<,<=)
+
+select movie_name, movie_length from movies;
+
+select movie_name, movie_length from movies
+where movie_length>120;
+
+select movie_name, movie_length from movies
+where movie_length<=120;
+
+select * from movies where release_date<'1999-12-31';
+
+select * from movies where movie_lang>'English';
+
+--challenge 1
+
+select movie_name,release_date from movies
+
+select * from directors
+select first_name,last_name from directors
+where nationality='American';
+
+select * from actors
+select * from actors where gender='M' and date_of_birth>'1970-01-01'
+
+select movie_name from movies where movie_length>90 and movie_lang='English'

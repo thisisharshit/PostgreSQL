@@ -1,0 +1,186 @@
+--INNER JOIN: part 1
+/*
+select table1.column1,table1.column2,table2.column1 from table1
+inner join table2 on table1.column3=table2.column3;
+*/
+
+select * from directors;
+
+insert into directors(first_name,last_name,date_of_birth,nationality)
+values ('Christopher','Nolan','1970-07-30','British');
+
+select * from movies;
+
+select directors.director_id,directors.first_name,directors.last_name,movies.movie_name from directors
+inner join movies on directors.director_id=movies.director_id;
+
+select directors.director_id,directors.first_name,directors.last_name,movies.movie_name from directors
+inner join movies on directors.director_id=movies.director_id
+where movies.movie_lang='Japanese';
+
+select directors.director_id,directors.first_name,directors.last_name,movies.movie_name from directors
+inner join movies on directors.director_id=movies.director_id
+where movies.movie_lang='Japanese'
+order by movies.movie_length;
+--above and below give same results (order doesnot matter in innner join)
+select directors.director_id,directors.first_name,directors.last_name,movies.movie_name from movies
+inner join directors on directors.director_id=movies.director_id
+where movies.movie_lang='Japanese'
+order by movies.movie_length;
+
+--part 2
+
+/*short way of writing the above code*/
+select t1.director_id,t1.first_name,t1.last_name,t2.movie_name from directors t1
+join movies t2 on t1.director_id=t2.director_id
+where t2.movie_lang='Japanese'
+order by t2.movie_length;
+
+select mo.movie_name,mr.domestic_takings,mr.international_takings from movies mo
+join movie_revenues mr on mo.movie_id=mr.movie_id
+order by mr.domestic_takings;
+
+/*only when joining columns have same name*/
+select mo.movie_name,mr.domestic_takings,mr.international_takings from movies mo
+join movie_revenues mr using (movie_id)
+where mo.age_certificate  in ('12','15','18')
+order by mr.domestic_takings;
+
+--challenge 1
+select * from movies;
+select d.first_name,d.last_name,m.movie_name,m.release_date from directors d
+join movies m using (director_id)
+where m.movie_lang in ('Chinese','Korean','Japanese');
+
+
+select m.movie_name,m.release_date,mr.international_takings from movies m
+join movie_revenues mr using (movie_id)
+where m.movie_lang='English';
+
+
+select m.movie_name,mr.domestic_takings,mr.international_takings from movies m
+join movie_revenues mr using (movie_id)
+where mr.domestic_takings is null or mr.international_takings is null
+order by m.movie_name;
+
+--LEFT JOINS
+
+select * from directors;
+select * from movies;
+select d.director_id,d.first_name,d.last_name,m.movie_name from directors d
+left join movies m on d.director_id=m.director_id;
+
+select d.director_id,d.first_name,d.last_name,m.movie_name from movies m
+left join directors d on d.director_id=m.director_id
+where d.nationality='British';
+
+--RIGHT JOINS
+
+select d.director_id,d.first_name,d.last_name,m.movie_name from directors d
+right join movies m on d.director_id=m.director_id;
+
+select d.director_id,d.first_name,d.last_name,m.movie_name from movies m 
+right join directors d on d.director_id=m.director_id;
+
+--FULL OUTER JOINS
+select d.director_id,d.first_name,d.last_name,m.movie_name from movies m 
+full join directors d on d.director_id=m.director_id;
+
+--challenge 2
+
+select d.first_name,d.last_name,m.movie_name,m.age_certificate from directors d
+left join movies m using (director_id)
+where d.nationality='British';
+
+select * from directors
+select * from movies;
+
+select d.first_name,d.last_name,count(m.movie_id) from directors d
+left join movies m using (director_id) 
+group by d.first_name,d.last_name;
+
+--Joining more than two tables
+/*
+select t1.column,t2.column,t3.column from table1 t1
+join table2 t2 on t1.column=t2.column
+join table3 t3 on t3.column=t2.column
+*/
+
+select d.first_name,d.last_name,m.movie_name,mr.international_takings,mr.domestic_takings 
+from directors d
+join movies m on d.director_id=m.director_id
+join movie_revenues mr on mr.movie_id=m.movie_id
+order by m.movie_name;
+
+select ac.first_name,ac.last_name,m.movie_name from actors ac
+join movies_actors ma on ac.actor_id=ma.actor_id
+join movies m on m.movie_id=ma.movie_id
+where m.movie_lang='English'
+order by m.movie_name;
+
+select d.first_name,d.last_name,m.movie_name,ac.first_name,ac.last_name,mr.international_takings,mr.domestic_takings 
+from directors d
+join movies m on d.director_id=m.director_id
+join movies_actors ma on ma.movie_id=m.movie_id
+join actors ac on ac.actor_id=ma.actor_id
+join movie_revenues mr on mr.movie_id=m.movie_id;
+
+--challenge 3
+select * from movies_actors
+
+select ac.first_name,ac.last_name from actors ac
+join movies_actors ma on ma.actor_id=ac.actor_id
+join movies m on m.movie_id=ma.movie_id
+join directors d on d.director_id=m.director_id
+where d.first_name='Wes';
+
+
+select * from movie_revenues
+select * from directors
+select * from movies
+select d.first_name,d.last_name,sum(mr.domestic_takings) from directors d
+join movies m on m.director_id=d.director_id
+join movie_revenues mr on mr.movie_id=m.movie_id
+where mr.domestic_takings is not null
+group by d.first_name,d.last_name
+order by sum desc
+limit 1;
+
+--UNION
+/*
+select column1,column2 from table1
+union
+select column1,column2 from table2'
+*/
+
+select first_name,last_name from directors
+union select first_name,last_name from actors;
+
+select first_name,last_name from directors
+where nationality='America'
+union 
+select first_name,last_name from actors
+where gender='F'
+order by first_name; --have to put after 
+
+--UNION ALL (only union will remove duplicate values)
+select first_name,last_name from directors
+union all
+select first_name,last_name from actors
+order by first_name;
+
+--INTERSECT
+
+
+select first_name from directors
+intersect
+select first_name from actors
+order by first_name;
+
+
+--EXCEPT
+select first_name from directors
+except
+select first_name from actors
+order by first_name;
+

@@ -1,0 +1,72 @@
+-- Database: DML
+
+-- DROP DATABASE "DML";
+
+CREATE DATABASE "DML"
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'English_United States.1252'
+    LC_CTYPE = 'English_United States.1252'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+	
+	
+create table examples(
+	example_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(30),
+	last_name VARCHAR(30)
+);
+select * from examples;
+alter table examples
+add column email varchar(50) unique;
+
+alter table examples
+add column nationality varchar(30),
+add column age int not null;
+
+alter table examples
+alter column nationality type CHAR(3),
+alter column last_name type varchar(50),
+alter column email type varchar(80);
+select * from examples;
+
+
+insert into examples(first_name, last_name, email, nationality, age)
+values ('harshit','agarwal','strharshit@gmail.com','IND',22);
+select * from examples;
+
+insert into examples(first_name, last_name, email, nationality, age)
+values ('emily','watson','ewatson@gmail.com','USA',29),
+('theo','scott','tscott@gmail.com','AUS',33),
+('emily','smith','esmith@gmail.com','GBR',29),
+('jim','burr','jburr@gmail.com','USA',54);
+
+
+--updating data in tables
+
+update examples
+set email='harshit@gmail.com' where email='strharshit@gmail.com';
+
+update examples
+set email='harshita@gmail.com' where example_id=1;
+
+update examples
+set nationality='CAN' where nationality='USA';
+
+update examples
+set first_name='james',age=55 where example_id=5;
+select * from examples
+
+
+--deleting data from tables
+
+delete from examples
+where example_id=2;
+
+delete from examples
+where nationality='GBR';
+
+delete from examples; --deleting all rows of data
+
+

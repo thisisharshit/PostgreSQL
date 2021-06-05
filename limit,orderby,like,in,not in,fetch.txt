@@ -1,0 +1,100 @@
+--using IN and NOT IN
+
+/*
+SELECT column1,column2 from tablename
+WHERE column3 IN ('value1','value2');
+
+SELECT column1, column2 from tablename
+WHERE column3 NOT IN ('value1','value2');
+*/
+
+select first_name,last_name from actors
+where first_name in ('Bruce','John');
+
+select first_name,last_name from actors
+where first_name not in ('Bruce','John','Peter');
+
+select actor_id,first_name,last_name from actors
+where  actor_id not in (2,3,4,5,6,8);
+
+
+--using LIKE with % and _
+
+/*
+select column from table
+where column LIKE '%pattern%';
+
+select column from table
+where column LIKE '_pattern_';
+*/
+
+select * from actors
+where first_name LIKE 'P%' and last_name like '%g%';
+
+select * from actors
+where first_name LIKE 'P_';
+
+select * from actors
+where first_name LIKE 'P_i%';
+
+--selecting data where a column is between 2 values
+/*
+select column1, column2 from tablename
+where  column3  between  value1 and value2; (values are included)
+*/
+
+select * from movies;
+
+select movie_name, release_date from movies
+where release_date between '1995-01-01' and '1999-12-31';
+
+select movie_name, movie_length from movies
+where movie_length between 90 and 120;
+
+--ordering the results returned
+/*
+select column1,cloumn2 from tablename
+order by  column3;
+*/
+
+select * from actors;
+
+select first_name,last_name,date_of_birth from actors
+order by first_name;
+
+select first_name,last_name,date_of_birth from actors
+order by first_name desc;
+
+select actor_id,first_name,last_name,date_of_birth from actors
+order by actor_id;
+
+select gender,actor_id,first_name,last_name,date_of_birth from actors
+where gender='F'
+order by date_of_birth;
+
+--limiting the no. of records returned
+/*
+select column1,column2 from tablename
+LIMIT N (return first n entries)
+*/
+
+select * from movie_revenues
+order by revenue_id
+LIMIT 10 offset 3; --not selecting first 3 rows
+
+--using FETCH
+/*
+select column1,column2 from tablename
+FETCH FIRST 1 ROW ONLY;
+*/
+
+select movie_id, movie_name from movies
+fetch first row only;
+
+select movie_id, movie_name from movies
+fetch first 10 row only;
+
+select movie_id, movie_name from movies
+offset 8 rows --write offset before when using fetch
+fetch first 10 row only;
+

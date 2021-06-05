@@ -1,0 +1,83 @@
+--Aggregate functions: COUNT
+
+select * from movie_revenues;
+select count(*) from movie_revenues;
+select count(international_takings) from movie_revenues; --dont count null values
+
+select count(*) from movies
+where movie_lang='English';
+
+--SUM function
+
+select sum(domestic_takings) from movie_revenues
+where domestic_takings>100;
+
+select sum(movie_length) from movies
+where movie_lang='Chinese';
+
+--MIN and MAX functions
+
+select max(international_takings) from movie_revenues;
+select max(movie_length) from movies;
+
+select min(movie_length) from movies
+where movie_lang='Japanese';
+
+select max(release_date) from movies;
+select min(release_date) from movies;
+
+select max(movie_name) from movies; --alphabatically the max value, not by length
+select min(movie_name) from movies;
+
+--AVG function
+
+select avg(movie_length) from movies
+where age_certificate='18';
+
+--grouping data
+/*
+select column1,AGGFUN(column2) from tablename
+group by column1;
+*/
+
+select count(movie_lang) from movies
+
+select movie_lang, count(movie_lang) from movies
+group by movie_lang;
+
+select movie_lang, avg(movie_length) from movies
+group by movie_lang;
+
+select movie_lang,age_certificate,avg(movie_length) from movies
+group by movie_lang,age_certificate; --distinct pair for combination of two
+
+select movie_lang,age_certificate,avg(movie_length) from movies
+where movie_length>120
+group by movie_lang,age_certificate;
+
+select movie_lang,min(movie_length),max(movie_length) from movies
+where age_certificate='15'
+group by movie_lang;
+
+--HAVING clause
+/*
+select column1,AGGFUN(column2) from tablename
+group by column1
+HAVING AGGFUN(column3)=value;
+*/
+
+select movie_lang,count(movie_lang) from movies
+group by movie_lang 
+having count(movie_lang)>1;
+
+
+select movie_lang,count(movie_lang) from movies
+where movie_length>120 
+group by movie_lang 
+having count(movie_lang)>1;
+
+select 5+5 as addition;
+select 13/3 as division;
+select 15%4 as modulus;
+
+select movie_id,(domestic_takings+international_takings) as total from movie_revenues;

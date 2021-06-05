@@ -1,0 +1,74 @@
+-- UPPER and LOWER FUNCTIONS
+
+select upper('string');
+
+select upper(first_name) as first_name,last_name from actors
+
+select lower(movie_name) from movies
+select movie_name from movies
+
+-- INITCAP STRING FUN (capitalise first letter of each word and convert all other in smallcaps)
+
+select initcap('example stRING');
+
+--LEFT and RIGHT FUNCTIONS
+
+select left('harshit',3); --print first n characterss
+select left('harshit',-2); --doesnot print last n characters
+
+select right(movie_name,10) from movies
+
+--REVERSE FUNCTION
+
+select reverse('harshit');
+select reverse(movie_name) from movies;
+select movie_name from movies;
+-- CHALLENGE 1
+
+select upper(d.first_name) as FN,upper(d.last_name) as LN, upper(m.movie_name) as movie from directors d
+inner join movies m using (director_id);
+
+-- SUBSTRING FUN.
+select substring('long string',2,6); -- result==(ong st)
+select substring(movie_name,2,10) from movies; --start from n1th char and print n2 chars
+
+-- REPLACE FUN.
+
+select replace('a cat plays with another cat','cat','dog');
+
+select * from actors;
+
+select first_name,last_name,replace(gender,'M','Male') from actors -- doesnt change org data
+
+update directors
+set nationality = replace(nationality,'American','USA')
+where nationality='American';
+
+update directors
+set nationality = replace(nationality,'Brit','Engl')
+where nationality='British';
+select * from directors;
+
+-- SPLIT PART FUNCTIOn
+/*
+select split_part('string','delimiter',field_number);
+select split_part(column_name,'ddelimiter',field_number) from tablename;
+*/
+
+select split_part('harshit@gmail.com','@',1);
+
+select movie_name,split_part(movie_name,' ',1) as First_word from movies;
+
+-- using casting to apply string fun to non string data types
+/*
+select column_name:DATATYPE from tablename
+*/
+
+select 1::VARCHAR(1);
+
+select * from directors;
+select date_of_birth::text from directors;
+
+select split_part(date_of_birth::text,'-',3)  from directors;
+
+select split_part(date_of_birth::varchar(4),'-',1)  from directors;
